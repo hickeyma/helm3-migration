@@ -38,7 +38,7 @@ Notes string `protobuf:"bytes,4,opt,name=notes,proto3" json:"notes,omitempty"`
 LastTestSuiteRun *TestSuite `protobuf:"bytes,5,opt,name=last_test_suite_run,json=lastTestSuiteRun,proto3" json:"last_test_suite_run,omitempty"`
 ```
 
-Status_Code:
+Status_Code (v2 only):
 
 ```console
 $ cat status_code-v2.txt
@@ -178,4 +178,27 @@ HookDeletePolicy:
 ```console
 $ pr -w $COLUMNS -m -t hook_delete_policy-v2.txt hook_delete_policy-v3.txt
 int32																					string
+```
+
+Template (v2 only):
+
+```console
+$ cat template-v2.txt
+Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+Data []byte `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+```
+
+Config (v2 only):
+
+```console
+$ cat config-v2.txt
+Raw    string `protobuf:"bytes,1,opt,name=raw,proto3" json:"raw,omitempty"`
+Values map[string]*Value `protobuf:"bytes,2,rep,name=values,proto3" json:"values,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+```
+
+Value (v2 only):
+
+```console
+$ cat value-v2.txt
+Value string `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
 ```
