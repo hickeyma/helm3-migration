@@ -80,9 +80,14 @@ The following will be assumed:
 
 ## 3.3 Extensions required to the Helm v3 client
 
-Some possible extensions need to the Helm v3 client:
+Some possible extensions to the Helm v3 client:
 
-- 
+- For Release version object:
+  - Be able to set `modifiedAt`
+  - Be able to set `status`
+  - Be able to set `creationTimestamp`
+  - Be able to set `version`
+  - Enable release objects to be added only (i.e. without adding the undelying kubernetes resources)
 
 ## 3.4 Helm convert release object code example <July 2019>
 
@@ -109,7 +114,7 @@ log.Printf("[Helm 3] Add the v3 Release object ....")
 cfg := v3.SetupConfig(namespace)
 client := v3.GetInstallClient(cfg)
 client.Namespace = namespace
-client.ReleaseName = releaseName
+client.ReleaseName = releaseVersionName
 _, err = client.Run(v3Chrt)
 if err != nil {
         return err
