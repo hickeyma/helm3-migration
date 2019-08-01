@@ -35,9 +35,7 @@ Run without --dry-run to take the actions described below:
 [Helm 3] ReleaseVersion "myrelease.v1" will be created.
 [Helm 3] ReleaseVersion "myrelease.v2" will be created.
 [Helm 3] ReleaseVersion "myrelease.v3" will be created.
-[Helm 2] ReleaseVersion "myrelease.v1" will be deleted.
-[Helm 2] ReleaseVersion "myrelease.v2" will be deleted.
-[Helm 2] ReleaseVersion "myrelease.v3" will be deleted.
+[Helm 2] ReleaseVersion "myrelease" will be deleted.
 
 $ helm 2to3 convert myrelease
 
@@ -50,26 +48,31 @@ $ helm 2to3 convert myrelease
 [Helm 3] ReleaseVersion "myrelease.v3" created.
 [Helm 3] Release "myrelease" created.
 [Helm 2] Release "myrelease" will be deleted.
-[Helm 2] ReleaseVersion "myrelease.v1" will be deleted.
-[Helm 2] ReleaseVersion "myrelease.v1" deleted.
-[Helm 2] ReleaseVersion "myrelease.v2" will be deleted.
-[Helm 2] ReleaseVersion "myrelease.v2" deleted.
-[Helm 2] ReleaseVersion "myrelease.v3" will be deleted.
-[Helm 2] ReleaseVersion "myrelease.v3" deleted.
 [Helm 2] Release "myrelease" deleted.
 Release "myrelease" was converted successfully from Helm 2 to Helm 3. 
 ```
 
 ## 3.1 Flow
 
-Steps when converting Helm v2 release object to Helm 3 release object:
+Steps when converting Helm v2 release object to Helm v3 release object:
 
-- Get v2 Release info
-- Retrieve versions
-- For each version:
-  - Get v2 Release object from Helm v2 state storage
-  - Map v2 Release object to v3 Release object
-  - Add the v3 Release object to Helm v3 state storage (v2 version deployed namespace)
+- Get v2 release history
+- For each release version:
+  - Map v2 release version object to v3 release object
+  - Add this v3 release object to Helm v3
+- Delete v2 release history (not underlying kubernetes resources)
+
+Note: The namespace is based off each v2 release version namespace
+
+## 3.2 Helm v2 and v3 client SDK
+
+The client interfaces used are:
+
+- k8s.io/helm/pkg/helm: helm.Interface.ReleaseHistory(releaseName, helm.WithMaxHistory(histMax))
+- helm.sh/helm/pkg/: action.Upgrade.Run(releaseName, v3Chart)
+- k8s.io/helm/pkg/helm: helm.Interface.DeleteRelease(releaseName, opts...) 
+
+TODO: Add the changes required from Helm SDK
 
 ## 3.2 Assumptions
 
