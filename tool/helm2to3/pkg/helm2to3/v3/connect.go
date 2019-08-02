@@ -33,12 +33,12 @@ func GetUpgradeClient(cfg *action.Configuration) *action.Upgrade{
 	return action.NewUpgrade(cfg)
 }
 
-func SetupConfig(namespace string) (*action.Configuration) {
+func setupConfig(namespace string) (*action.Configuration) {
 
-        actionConfig, err := newActionConfig(namespace)
-	if err != nil {
-                panic(err)
-        }
+	actionConfig := new(action.Configuration)
+
+	 // Initialize the rest of the actionConfig
+        initActionConfig(actionConfig, namespace)
 
         // set defaults from environment
         //settings.Init()
@@ -70,14 +70,19 @@ func SetupConfig(namespace string) (*action.Configuration) {
         return actionConfig
 }
 
-func newActionConfig(namespace string) (*action.Configuration, error) {
+func initActionConfig(actionConfig *action.Configuration, namespace string) {
         kc := kube.New(kubeConfig())
         kc.Log = logf
 
-        clientset, err := kc.KubernetesClientSet()
+        clientset, err := kc.Factory.KubernetesClientSet()
         if err != nil {
-		return nil, err
+                // TODO return error
+                log.Fatal(err)
         }
+        //var namespace string
+        //if !allNamespaces {
+        //        namespace = getNamespace()
+        //}
 
         var store *storage.Storage
         switch os.Getenv("HELM_DRIVER") {
@@ -97,12 +102,10 @@ func newActionConfig(namespace string) (*action.Configuration, error) {
                 panic("Unknown driver in HELM_DRIVER: " + os.Getenv("HELM_DRIVER"))
         }
 
-        return &action.Configuration{
-                RESTClientGetter: kubeConfig(),
-                KubeClient:       kc,
-                Releases:         store,
-                Log:              logf,
-        }, nil
+        actionConfig.RESTClientGetter = kubeConfig()
+        actionConfig.KubeClient = kc
+        actionConfig.Releases = store
+        actionConfig.Log = logf
 }
 
 func kubeConfig() genericclioptions.RESTClientGetter {

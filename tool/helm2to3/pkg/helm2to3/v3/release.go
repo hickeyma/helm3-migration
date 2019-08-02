@@ -11,7 +11,7 @@ import (
 
 
 func InstallRelease(v3Chrt *chart.Chart, releaseName string, namespace string) error {
-	cfg := SetupConfig(namespace)
+	cfg := setupConfig(namespace)
         client := GetInstallClient(cfg)
         client.Namespace = namespace
         client.ReleaseName = releaseName
@@ -20,7 +20,7 @@ func InstallRelease(v3Chrt *chart.Chart, releaseName string, namespace string) e
 }
 
 func UpgradeRelease(v3Chrt *chart.Chart, releaseName string, namespace string) error {
-	cfg := SetupConfig(namespace)
+	cfg := setupConfig(namespace)
         client := GetUpgradeClient(cfg)
         client.MaxHistory = 256
 	_, err := client.Run(releaseName, v3Chrt)
