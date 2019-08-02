@@ -29,6 +29,10 @@ func GetInstallClient(cfg *action.Configuration) *action.Install{
 	return action.NewInstall(cfg)
 }
 
+func GetUpgradeClient(cfg *action.Configuration) *action.Upgrade{
+	return action.NewUpgrade(cfg)
+}
+
 func SetupConfig(namespace string) (*action.Configuration) {
 
         actionConfig, err := newActionConfig(namespace)

@@ -9,6 +9,24 @@ import (
 	v2Chart "k8s.io/helm/pkg/proto/hapi/chart"
 )
 
+
+func InstallRelease(v3Chrt *chart.Chart, releaseName string, namespace string) error {
+	cfg := SetupConfig(namespace)
+        client := GetInstallClient(cfg)
+        client.Namespace = namespace
+        client.ReleaseName = releaseName
+	_, err := client.Run(v3Chrt)
+	return err
+}
+
+func UpgradeRelease(v3Chrt *chart.Chart, releaseName string, namespace string) error {
+	cfg := SetupConfig(namespace)
+        client := GetUpgradeClient(cfg)
+        client.MaxHistory = 256
+	_, err := client.Run(releaseName, v3Chrt)
+	return err
+}
+
 func Mapv2ChartTov3Chart(v2Chrt *v2Chart.Chart) (*chart.Chart, error) {
 	 v3Chrt := new(chart.Chart)
 
