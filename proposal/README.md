@@ -4,10 +4,9 @@ Helm v3 introduces quite a lot of change in the underlying architecture and plum
 Helm v2. One key change is around Release storage. The changes includes the Kubernetes resource for storage and the 
 release object metadata contained in the resource. Releases will also be on a per user namespace instead of using the the Tiller namespace (for example, v2 default Tiller namespace `kube-system`).
 
-# 2. Requirement
+# 2. Use case
 
-When Helm v3 is installed in a cluster that is currently managed by a Helm v2 installation, the Helm v3 installation 
-should be able to manage the existing v2 Releases.
+When Helm v3 is installed in a cluster that is currently managed by a Helm v2 installation, a common requirement will be to migrate releases in-place to Helm v3 (i.e. without deleting and re-deploying them).
 
 Note: This proposal covers the migration use case of Helm v3 managing existing Helm v2 releases (i.e. converting v2 releases to v3 releases). Other migration use cases are covered by documentation which is currently a WIP: https://github.com/helm/helm/pull/5582.
 
