@@ -44,6 +44,7 @@ $ helm 2to3 convert myrelease --dry-run
 NOTE: This is in dry-run mode, the following actions will not be executed.
 Run without --dry-run to take the actions described below:
 
+Release "myrelease" will be converted from Helm 2 to Helm 3. 
 [Helm 3] Release "myrelease" will be created.
 [Helm 3] ReleaseVersion "myrelease.v1" will be created.
 [Helm 3] ReleaseVersion "myrelease.v2" will be created.
@@ -52,6 +53,7 @@ Run without --dry-run to take the actions described below:
 
 $ helm 2to3 convert myrelease
 
+Release "myrelease" will be converted from Helm 2 to Helm 3. 
 [Helm 3] Release "myrelease" will be created.
 [Helm 3] ReleaseVersion "myrelease.v1" will be created.
 [Helm 3] ReleaseVersion "myrelease.v1" created.
